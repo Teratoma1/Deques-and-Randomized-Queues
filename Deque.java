@@ -155,6 +155,12 @@ public class Deque<Item> implements Iterable<Item> {
 
 
     public static void main(String[] args) {
-
+        Deque<Integer> deck = new Deque<>();
+        deck.addFirst(5);
+        deck.addLast(-5);
+        deck.addFirst(15);
+        deck.addFirst(25);
+        deck.addLast(-50);
+        deck.addFirst(30);
     }
 }

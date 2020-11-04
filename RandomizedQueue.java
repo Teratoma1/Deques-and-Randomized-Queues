@@ -4,6 +4,7 @@
  *  Description:
  **************************************************************************** */
 
+import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 
@@ -11,7 +12,7 @@ import java.util.Iterator;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
-    private StackForRandomizer<Item> stack = new StackForRandomizer<>();
+    private final StackForRandomizer<Item> stack = new StackForRandomizer<>();
 
     private Node first;
 
@@ -23,7 +24,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private class Node {
         Node next;
-
         Item item;
     }
 
@@ -62,9 +62,12 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     private void pusher() {
         int broj = StdRandom.uniform(count);
         while (broj > 0) {
+
             Item item = first.item;
             first = first.next;
+
             stack.push(item);
+            count--;
             broj--;
         }
     }
@@ -85,6 +88,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             enqueue(i);
             stack.pop();
         }
+        count--;
 
         return item;
     }
@@ -173,6 +177,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             public void remove() { /* not supported */ }
 
             public Item2 next() {
+                if (current == null) {
+                    throw new java.util.NoSuchElementException("no more items");
+                }
+
                 Item2 item = current.item;
                 current = current.next;
                 return item;
@@ -183,14 +191,23 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     public static void main(String[] args) {
 
-        int n = 5;
+
         RandomizedQueue<Integer> queue = new RandomizedQueue<Integer>();
-        for (int i = 0; i < n; i++)
-            queue.enqueue(i);
-        for (int a : queue) {
-            for (int b : queue)
-                StdOut.print(a + "-" + b + " ");
-            StdOut.println();
+
+        while (!StdIn.isEmpty()) {
+            String a = StdIn.readString();
+
+            if (a.equals("-")) {
+                StdOut.println(queue.dequeue());
+            }
+            else if (a.equals("!")) {
+                StdOut.println(queue.sample());
+            }
+            else {
+                queue.enqueue(Integer.parseInt(a));
+            }
+
+
         }
 
     }
